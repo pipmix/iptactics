@@ -1,3 +1,5 @@
+<!--    // INTERNET PROGRAMMING // MATTHEW ESCOBEDO  -->
+
 <html>
     <head>
         <title>Internet Programming</title>
@@ -78,6 +80,26 @@
     margin:auto auto;
 
 }
+
+
+    .button1 {
+        background: rgb(55, 188, 44);
+
+    }
+
+    .button2 {
+        background: rgb(44, 177, 55);
+    }
+
+    .button3 {
+        background: rgb(33, 166, 66);
+    }
+
+    .button4 {
+        background: rgb(55, 90, 255);
+    }
+
+
 </style>
 
 <div id="canvas"></div>
@@ -90,7 +112,15 @@
 
 <div id="UI">
     <div id="leftCol"></div>
-    <div id="centerCol">aadasd</div>
+    <div id="centerCol">
+
+        <button class="button1">Move</button>
+        <button class="button2">Attack</button>
+        <button class="button3">End Turn</button>
+
+
+
+        </div>
     <div id="rightCol">aadasd</div>
 
 </div>
@@ -128,6 +158,8 @@
             var projector;
             var speed = 0.5;
             var levelGroup;
+
+            var prevSelected = 0;
 
             var mapX = 14;
             var mapY = 10;
@@ -260,7 +292,7 @@ objLoader.load('models/pawn.obj', function(object) {
                                 }
                                 else if (temp == 2){
                                     geometry = new THREE.SphereGeometry(1 ,15,15);
-                                    var objMat = new THREE.MeshLambertMaterial({color: 0xaaaaff});
+                                    var objMat = new THREE.MeshLambertMaterial({color: 0x2222ff});
                                     var obj = new THREE.Mesh( geometry, objMat );
                                     obj.castShadow = true;
                                     obj.name = "pawn2A";
@@ -293,7 +325,7 @@ objLoader.load('models/pawn.obj', function(object) {
                                 }
                                 else if (temp == 5){
                                     geometry = new THREE.SphereGeometry(1 ,15,15);
-                                    var objMat = new THREE.MeshLambertMaterial({color: 0xaaaaff});
+                                    var objMat = new THREE.MeshLambertMaterial({color: 0xacccff});
                                     var obj = new THREE.Mesh( geometry, objMat );
                                     obj.castShadow = true;
                                     obj.name = "rookA";
@@ -304,7 +336,7 @@ objLoader.load('models/pawn.obj', function(object) {
                                 }
                                 else if (temp == 6){
                                     geometry = new THREE.SphereGeometry(1 ,15,15);
-                                    var objMat = new THREE.MeshLambertMaterial({color: 0x11dd44});
+                                    var objMat = new THREE.MeshLambertMaterial({color: 0xffffff});
                                     var obj = new THREE.Mesh( geometry, objMat );
                                     obj.castShadow = true;
                                     obj.name = "kingA";
@@ -342,7 +374,7 @@ objLoader.load('models/pawn.obj', function(object) {
                 geometry = new THREE.SphereGeometry(1 ,15,15);
                 mSphere = new THREE.Mesh(geometry, material);
                 mSphere.castShadow = true;
-                scene.add(mSphere);
+                //scene.add(mSphere);
 
 
 
@@ -402,8 +434,8 @@ objLoader.load('models/pawn.obj', function(object) {
             function render() {
                 //cube.rotation.x += 0.01;
                 //cube.rotation.y += 0.01;
-                mSphere.rotation.x += 0.01;
-                mSphere.rotation.y += 0.01;
+                //mSphere.rotation.x += 0.01;
+                //mSphere.rotation.y += 0.01;
 
                 var timer = Date.now() * 0.00025;
                 //camera.position.x = Math.cos( timer ) * 20;
@@ -418,7 +450,7 @@ objLoader.load('models/pawn.obj', function(object) {
 
 
 
-                mSphere.applyMatrix(new THREE.Matrix4().makeTranslation(0, num, 0));
+                //mSphere.applyMatrix(new THREE.Matrix4().makeTranslation(0, num, 0));
 
 
 
@@ -487,51 +519,48 @@ objLoader.load('models/pawn.obj', function(object) {
                 if (currentlySelected == 1){
 
                     placement02[tileSelected] = 1;
-                    placement02[highlight] = 0;
-
+                    placement02[prevSelected] = 0;
                     objSelected = scene.getObjectByName( "pawn1A" );
                     objSelected.position.x = currentCol * 4;
                     objSelected.position.y = map02[currentRow*mapX + currentCol]*.5+.7
                     objSelected.position.z = currentRow * 4;
-
-
                 }
                 else if (currentlySelected == 2){
 
-                    placement02[tileSelected] = 1;
-                    placement02[highlight] = 0;
+                    placement02[tileSelected] = 2;
+                    placement02[prevSelected] = 0;
                     objSelected = scene.getObjectByName( "pawn2A" );
                     objSelected.position.x = currentCol * 4;
                     objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
                     objSelected.position.z = currentRow * 4;
                 }
                 else if (currentlySelected == 3){
-                    placement02[tileSelected] = 1;
-                    placement02[highlight] = 0;
+                    placement02[tileSelected] = 3;
+                    placement02[prevSelected] = 0;
                     objSelected = scene.getObjectByName( "knight1A" );
                     objSelected.position.x = currentCol * 4;
                     objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
                     objSelected.position.z = currentRow * 4;
                 }
                 else if (currentlySelected == 4){
-                    placement02[tileSelected] = 1;
-                    placement02[highlight] = 0;
+                    placement02[tileSelected] = 4;
+                    placement02[prevSelected] = 0;
                     objSelected = scene.getObjectByName( "knight2A" );
                     objSelected.position.x = currentCol * 4;
                     objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
                     objSelected.position.z = currentRow * 4;
                 }
                 else if (currentlySelected == 5){
-                    placement02[tileSelected] = 1;
-                    placement02[highlight] = 0;
+                    placement02[tileSelected] = 5;
+                    placement02[prevSelected] = 0;
                     objSelected = scene.getObjectByName( "rookA" );
                     objSelected.position.x = currentCol * 4;
                     objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
                     objSelected.position.z = currentRow * 4;
                 }
                 else if (currentlySelected == 6){
-                    placement02[tileSelected] = 1;
-                    placement02[highlight] = 0;
+                    placement02[tileSelected] = 6;
+                    placement02[prevSelected] = 0;
                     objSelected = scene.getObjectByName( "kingA" );
                     objSelected.position.x = currentCol * 4;
                     objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
@@ -593,6 +622,7 @@ objLoader.load('models/pawn.obj', function(object) {
                     case 13:
                         currentlySelected = placement02[currentRow * mapX + currentCol];
                         //highlight = placement02[tileSelected];
+                        prevSelected = currentRow * mapX + currentCol;
                         updateDiv("leftCol");
 
 
