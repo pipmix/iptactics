@@ -137,10 +137,12 @@
             var currentCol = 0;
 
             var objSelected;
-            var highlight;
+            var highlight = 0;
 
             var teamACounter = 0;
             var teamBCounter = 0;
+
+            var currentlySelected = 0;
 
 
             var init = function () {
@@ -432,7 +434,7 @@ objLoader.load('models/pawn.obj', function(object) {
             function updateDiv(divname){
 
                 if (placement02[tileSelected] == 0){
-                    //document.getElementById(divname).innerHTML = "";
+                    document.getElementById(divname).innerHTML = "";
                     //document.getElementById("rightCol").innerHTML = "";
                 }
                 else {
@@ -478,6 +480,73 @@ objLoader.load('models/pawn.obj', function(object) {
 
             }
 
+            function moveFunc(){
+
+
+
+                if (currentlySelected == 1){
+
+                    placement02[tileSelected] = 1;
+                    placement02[highlight] = 0;
+
+                    objSelected = scene.getObjectByName( "pawn1A" );
+                    objSelected.position.x = currentCol * 4;
+                    objSelected.position.y = map02[currentRow*mapX + currentCol]*.5+.7
+                    objSelected.position.z = currentRow * 4;
+
+
+                }
+                else if (currentlySelected == 2){
+
+                    placement02[tileSelected] = 1;
+                    placement02[highlight] = 0;
+                    objSelected = scene.getObjectByName( "pawn2A" );
+                    objSelected.position.x = currentCol * 4;
+                    objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
+                    objSelected.position.z = currentRow * 4;
+                }
+                else if (currentlySelected == 3){
+                    placement02[tileSelected] = 1;
+                    placement02[highlight] = 0;
+                    objSelected = scene.getObjectByName( "knight1A" );
+                    objSelected.position.x = currentCol * 4;
+                    objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
+                    objSelected.position.z = currentRow * 4;
+                }
+                else if (currentlySelected == 4){
+                    placement02[tileSelected] = 1;
+                    placement02[highlight] = 0;
+                    objSelected = scene.getObjectByName( "knight2A" );
+                    objSelected.position.x = currentCol * 4;
+                    objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
+                    objSelected.position.z = currentRow * 4;
+                }
+                else if (currentlySelected == 5){
+                    placement02[tileSelected] = 1;
+                    placement02[highlight] = 0;
+                    objSelected = scene.getObjectByName( "rookA" );
+                    objSelected.position.x = currentCol * 4;
+                    objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
+                    objSelected.position.z = currentRow * 4;
+                }
+                else if (currentlySelected == 6){
+                    placement02[tileSelected] = 1;
+                    placement02[highlight] = 0;
+                    objSelected = scene.getObjectByName( "kingA" );
+                    objSelected.position.x = currentCol * 4;
+                    objSelected.position.y =  map02[currentRow*mapX + currentCol]*.5+.7
+                    objSelected.position.z = currentRow * 4;
+                }
+
+
+
+
+
+
+
+
+            }
+
             function update(delta){
 
                 if (moveForward == true )camera.position.z += -speed;
@@ -513,18 +582,27 @@ objLoader.load('models/pawn.obj', function(object) {
                 updateDiv("rightCol");
 
 
+
             }
 
 
             function onKeyDown ( event ) {
         		switch ( event.keyCode ) {
 
-                    //enter
+                    // enter
                     case 13:
+                        currentlySelected = placement02[currentRow * mapX + currentCol];
+                        //highlight = placement02[tileSelected];
                         updateDiv("leftCol");
-                        highlight = tileSelected;
 
 
+
+                        break;
+                    // move
+                    case 77:
+                        highlight = placement02[tileSelected];
+                        placement02[currentlySelected] = 0;
+                        moveFunc();
                         break;
 
         			case 87: /*W*/ moveForward = true; break;
