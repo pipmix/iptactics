@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Space Bears</title>
+        <title>Internet Programming</title>
         <style> body { margin: 0; background-color: #aaa; } canvas { width: 100%; height: 100% } </style>
         <script src="js/three.min.js"></script>
         <script src="js/OBJLoader.js"></script>
@@ -30,7 +30,7 @@
     margin: 20px;
     padding: 0px;
     position: static; /* fixed or static */
-    */
+
 }
 #UI {
     float: left;
@@ -38,8 +38,8 @@
     color: #fff;
     font-family: arial, verdana;
 
-font-family: 'PT Sans Narrow', Arial, sans-serif;
-box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
+    font-family: 'PT Sans Narrow', Arial, sans-serif;
+    box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
 
 
 
@@ -89,7 +89,7 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
 
 
 <div id="UI">
-    <div id="leftCol">www</div>
+    <div id="leftCol"></div>
     <div id="centerCol">aadasd</div>
     <div id="rightCol">aadasd</div>
 
@@ -137,7 +137,7 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
             var currentCol = 0;
 
             var objSelected;
-
+            var highlight;
 
             var teamACounter = 0;
             var teamBCounter = 0;
@@ -145,52 +145,26 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
 
             var init = function () {
 
+                // CSS DIVS
                 container = document.getElementById( 'canvas' );
                 container2 = document.getElementById( 'UI' );
-                //document.body.appendChild( container );
-
+                // BIND TO CSS
                 document.getElementById("overall").appendChild( container );
                 document.getElementById("overall").appendChild( container2 );
-
                 scene = new THREE.Scene();
                 projector = new THREE.Projector();
-
-
-
                 camera = new THREE.PerspectiveCamera( 45, 820 / 480, 0.1, 1000 );
                 renderer = new THREE.WebGLRenderer(); renderer.setSize( 820, 480 );
-
-                //renderer = new THREE.WebGLRenderer(); renderer.setSize( window.innerWidth*.8, window.innerHeight*.8 );
                 container.appendChild( renderer.domElement );
-
-
-
-
-
-
+                // SCENE SETUP
                 renderer.shadowMapEnabled = true;
-
                 mat2 = new THREE.MeshLambertMaterial({color: 0x7777ff});
-
-
                 var spotLight = new THREE.SpotLight( 0xffffff );
                 spotLight.position.set( 80, 80, 60 );
                 spotLight.castShadow = true;
                 scene.add( spotLight );
-
-
-
-
-
-
-
+                // GROUP TEST
                 levelGroup = new THREE.Group();
-
-
-
-
-
-
                 cube = new THREE.Mesh( geometry, mat2 );
                 scene.add( cube );
 
@@ -218,10 +192,34 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
                 }
                 */
 
+
+
+                objLoader = new THREE.OBJLoader();
+objLoader.load('models/pawn.obj', function(object) {
+    object.traverse( function( node ) {
+        if ( node instanceof THREE.Mesh ) {
+            node.castShadow = true;
+
+            }
+    } );
+
+    //object.applyMatrix(new THREE.Matrix4().makeTranslation(x*4, map02[y*mapX + x]*.5+.7, y*4));
+    //object.applyMatrix(new THREE.Matrix4().makeTranslation(0,0,0);
+    object.position.x = x;
+    object.position.z = y;
+    object.castShadow = true;
+    object.name = "pawn1A";
+    teamACounter += 1;
+    object.scale.set(2.5,2.5,2.5);
+
+    scene.add(object);
+});
+
+
                 for ( var y = 0 ; y < mapY; y++)
                     for ( var x = 0 ; x < mapX ; x++){
 
-                        geometry = new THREE.PlaneGeometry( 4, 4);
+                        geometry = new THREE.PlaneBufferGeometry( 4, 4);
                         var objMat = new THREE.MeshLambertMaterial({color: 0x7777ff});
                         var obj = new THREE.Mesh( geometry, objMat );
 
@@ -253,7 +251,7 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
                                     var objMat = new THREE.MeshLambertMaterial({color: 0x2222ff});
                                     var obj = new THREE.Mesh( geometry, objMat );
                                     obj.castShadow = true;
-                                    obj.name = "teamA" + teamACounter.toString();
+                                    obj.name = "pawn1A";
                                     teamACounter += 1;
                                     obj.applyMatrix(new THREE.Matrix4().makeTranslation(x*4, map02[y*mapX + x]*.5+.7, y*4));
                                     scene.add(obj);
@@ -263,7 +261,40 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
                                     var objMat = new THREE.MeshLambertMaterial({color: 0xaaaaff});
                                     var obj = new THREE.Mesh( geometry, objMat );
                                     obj.castShadow = true;
-                                    obj.name = "teamA" + teamACounter.toString();
+                                    obj.name = "pawn2A";
+                                    teamACounter += 1;
+                                    obj.applyMatrix(new THREE.Matrix4().makeTranslation(x*4, map02[y*mapX + x]*.5+.7, y*4));
+                                    scene.add(obj);
+
+                                }
+                                else if (temp == 3){
+                                    geometry = new THREE.SphereGeometry(1 ,15,15);
+                                    var objMat = new THREE.MeshLambertMaterial({color: 0xaaaaff});
+                                    var obj = new THREE.Mesh( geometry, objMat );
+                                    obj.castShadow = true;
+                                    obj.name = "knight1A";
+                                    teamACounter += 1;
+                                    obj.applyMatrix(new THREE.Matrix4().makeTranslation(x*4, map02[y*mapX + x]*.5+.7, y*4));
+                                    scene.add(obj);
+
+                                }
+                                else if (temp == 4){
+                                    geometry = new THREE.SphereGeometry(1 ,15,15);
+                                    var objMat = new THREE.MeshLambertMaterial({color: 0xaaaaff});
+                                    var obj = new THREE.Mesh( geometry, objMat );
+                                    obj.castShadow = true;
+                                    obj.name = "knight2A";
+                                    teamACounter += 1;
+                                    obj.applyMatrix(new THREE.Matrix4().makeTranslation(x*4, map02[y*mapX + x]*.5+.7, y*4));
+                                    scene.add(obj);
+
+                                }
+                                else if (temp == 5){
+                                    geometry = new THREE.SphereGeometry(1 ,15,15);
+                                    var objMat = new THREE.MeshLambertMaterial({color: 0xaaaaff});
+                                    var obj = new THREE.Mesh( geometry, objMat );
+                                    obj.castShadow = true;
+                                    obj.name = "rookA";
                                     teamACounter += 1;
                                     obj.applyMatrix(new THREE.Matrix4().makeTranslation(x*4, map02[y*mapX + x]*.5+.7, y*4));
                                     scene.add(obj);
@@ -274,7 +305,7 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
                                     var objMat = new THREE.MeshLambertMaterial({color: 0x11dd44});
                                     var obj = new THREE.Mesh( geometry, objMat );
                                     obj.castShadow = true;
-                                    obj.name = "teamB" + teamACounter.toString();
+                                    obj.name = "kingA";
                                     teamBCounter += 1;
                                     obj.applyMatrix(new THREE.Matrix4().makeTranslation(x*4, map02[y*mapX + x]*.5+.7, y*4));
                                     scene.add(obj);
@@ -347,6 +378,7 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
                }
 
                function onDocumentMouseDown(event) {
+                   /*
                      event.preventDefault();
                      //var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
                      var vector = new THREE.Vector3((event.clientX / window.innerWidth ) * 2 - 1,-( event.clientY / window.innerHeight ) * 2 + 1,0.5);
@@ -359,6 +391,7 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
                        intersects[ 0 ].object.material.transparent = true;
                        intersects[ 0 ].object.material.opacity = 0.5;
                     }
+                    */
                 }
 
 
@@ -396,7 +429,51 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
 
 //----------------------------------- UPDATE
 
-            function updateDiv(){
+            function updateDiv(divname){
+
+                if (placement02[tileSelected] == 0){
+                    //document.getElementById(divname).innerHTML = "";
+                    //document.getElementById("rightCol").innerHTML = "";
+                }
+                else {
+                    var tempName;
+                    if(placement02[tileSelected] == 1){
+                        tempName = pawn1;
+
+                    }
+                    else if(placement02[tileSelected] == 2){
+                        tempName = pawn2;
+                    }
+                    else if(placement02[tileSelected] == 3){
+                        tempName = knight1;
+                    }
+                    else if(placement02[tileSelected] == 4){
+                        tempName = knight2;
+                    }
+                    else if(placement02[tileSelected] == 5){
+                        tempName = rook;
+                    }
+                    else if(placement02[tileSelected] == 6){
+                        tempName = king;
+                    }
+
+
+
+
+                    document.getElementById(divname).innerHTML = "Unit Type: ";
+                    document.getElementById(divname).innerHTML += tempName.type;
+                    document.getElementById(divname).innerHTML += "<br />";
+                    document.getElementById(divname).innerHTML += "Name: " + tempName.name;
+                    document.getElementById(divname).innerHTML += "<br />";
+                    document.getElementById(divname).innerHTML += "HP: " + tempName.currentHp + " / " + tempName.hp;
+                    document.getElementById(divname).innerHTML += "<br />";
+                    document.getElementById(divname).innerHTML += "Strength: " + tempName.str;
+                    document.getElementById(divname).innerHTML += "<br />";
+                    document.getElementById(divname).innerHTML += "Range: " + tempName.rng;
+                    document.getElementById(divname).innerHTML += "<br />";
+                    //document.getElementById("rightCol").innerHTML = "";
+
+                }
 
 
             }
@@ -433,7 +510,7 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
                 objSelected = scene.getObjectByName( "tile" + tileSelected.toString());
                 objSelected.material.color.setHex(0xff0000);
 
-                updateDiv();
+                updateDiv("rightCol");
 
 
             }
@@ -441,6 +518,14 @@ box-shadow:5px 5px 5px rgba(0, 0, 0, .5);
 
             function onKeyDown ( event ) {
         		switch ( event.keyCode ) {
+
+                    //enter
+                    case 13:
+                        updateDiv("leftCol");
+                        highlight = tileSelected;
+
+
+                        break;
 
         			case 87: /*W*/ moveForward = true; break;
 
